@@ -8,7 +8,9 @@
 
 require 'csv'
 
+spots = []
 CSV.foreach("#{Rails.root}/db/jta_free_wifi.csv", {headers: true}) do |r|
-  spot = WifiSpot.new(name_jp: r[1], name_en: r[2], address_jp: r[8], address_en: r[9], latitude: r[18], longitude: r[19])
-  spot.save!
+  spots << WifiSpot.new(name_jp: r[1], name_en: r[2], address_jp: r[8], address_en: r[9], latitude: r[18], longitude: r[19])
 end
+
+WifiSpot.import spots
