@@ -1,0 +1,2 @@
+class WifiSpot < ApplicationRecord
+end
