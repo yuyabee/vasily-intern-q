@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170527221620) do
+ActiveRecord::Schema.define(version: 20170528232123) do
 
   create_table "wifi_spots", force: :cascade do |t|
-    t.string "name_jp"
+    t.string "name_ja"
     t.string "name_en"
-    t.string "address_jp"
+    t.string "address_ja"
     t.string "address_en"
     t.float "longitude"
     t.float "latitude"

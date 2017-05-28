@@ -5,11 +5,11 @@ class WifiSpotsController < ApplicationController
     attrs = ["distance",  "latitude", "longitude"]
     case @lang
     when "ja"
-      attrs += ["name_jp", "address_jp"]
+      attrs += ["name_ja", "address_ja"]
     when "en"
       attrs += ["name_en", "address_en"]
     else
-      attrs += ["name_jp", "address_jp", "name_en", "address_en"]
+      attrs += ["name_ja", "address_ja", "name_en", "address_en"]
     end
 
     res = WifiSpot
