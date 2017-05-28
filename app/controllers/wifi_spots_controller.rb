@@ -7,7 +7,6 @@ class WifiSpotsController < ApplicationController
       .limit(@limit)
       .map{|s| s.as_json.merge({ "distance" => (s.distance_from(@geo_point) * 1000).to_i })}
 
-
     render json: res, status: :ok
   end
 
@@ -17,6 +16,8 @@ class WifiSpotsController < ApplicationController
     params.permit(:lat, :lng, :distance, :limit)
 
     @geo_point = [params.fetch(:lat).to_f, params.fetch(:lng).to_f]
+
+    # setting default when the params not given
     @limit = params.fetch(:limit, 5).to_i
     @distance = params.fetch(:distance, 500).to_i # unit: meter
   end
