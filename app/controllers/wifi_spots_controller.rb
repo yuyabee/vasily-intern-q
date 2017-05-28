@@ -32,6 +32,6 @@ class WifiSpotsController < ApplicationController
     @limit = params.fetch(:limit, 5).to_i
     @distance = params.fetch(:distance, 500).to_i # unit: meter
 
-    @lang = params.fetch(:lang, nil)
+    @lang = params.fetch(:lang, "ja")
   end
 end
