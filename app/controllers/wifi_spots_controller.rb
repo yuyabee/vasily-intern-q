@@ -2,14 +2,12 @@ class WifiSpotsController < ApplicationController
   before_action :set_params, only: [:index]
 
   def index
-    attrs = ["distance",  "latitude", "longitude"]
+    attrs = ["distance", "latitude", "longitude"]
     case @lang
-    when "ja"
-      attrs += ["name_ja", "address_ja"]
-    when "en"
-      attrs += ["name_en", "address_en"]
+    when *WifiSpot::LANG
+      attrs += ["name_", "address_"].map {|attr| attr + @lang}
     else
-      attrs += ["name_ja", "address_ja", "name_en", "address_en"]
+      attrs += WifiSpot::LANG.map {|lang| ["name_" + lang, "address_" + lang]}.flatten
     end
 
     res = WifiSpot
