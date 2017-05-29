@@ -25,13 +25,5 @@ class WifiSpotsController < ApplicationController
 
   def set_params
     params.permit(:lat, :lng, :distance, :limit, :lang, :search)
-
-    @geo_point = params.has_key?(:search) ? params.fetch(:search) : [params.fetch(:lat).to_f, params.fetch(:lng).to_f]
-
-    # setting default when the params not given
-    @limit = params.fetch(:limit, 5).to_i
-    @distance = params.fetch(:distance, 500).to_i # unit: meter
-
-    @lang = params.fetch(:lang, "ja")
   end
 end

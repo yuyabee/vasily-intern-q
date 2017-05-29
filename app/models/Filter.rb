@@ -9,15 +9,18 @@ class Filter
 
   validates :lang, inclusion: { in: WifiSpot::LANG, message: "%{value} is not supported" }, allow_nil: true
 
-  validates :lat , numericality: { greater_than_or_equal_to:  -90, less_than_or_equal_to:  90 }, allow_nil: true
-  validates :lng, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }, allow_nil: true
+  validates :geo_point, presence: { message: "location(string) or lat and lng must be given" }
 
   def initialize(params)
-    @geo_point = params.has_key?(:search) ? params.fetch(:search) : [params.fetch(:lat).to_f, params.fetch(:lng).to_f]
+    if params.has_key?(:location)
+      @geo_point = params.fetch(:location)
+    elsif params.has_key?(:lat) && params.has_key?(:lng) 
+      @geo_point = [params.fetch(:lat).to_f, params.fetch(:lng).to_f]
+    end
 
     # setting default when the params not given
     @limit = params.fetch(:limit, 5).to_i
-    @distance = params.fetch(:distance, 500).to_i # unit: meter
+    @distance = params.fetch(:distance, 500).to_i / 1000 # unit: km
 
     @lang = params.fetch(:lang, "ja")
   end
