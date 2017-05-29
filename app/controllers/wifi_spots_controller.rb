@@ -2,21 +2,23 @@ class WifiSpotsController < ApplicationController
   before_action :set_params, only: [:index]
 
   def index
-    attrs = ["distance", "latitude", "longitude"]
-    case @lang
-    when *WifiSpot::LANG
-      attrs += ["name_", "address_"].map {|attr| attr + @lang}
+    # attrs = ["distance", "latitude", "longitude"]
+    # case @lang
+    # when *WifiSpot::LANG
+      # attrs += ["name_", "address_"].map {|attr| attr + @lang}
+    # else
+      # attrs += WifiSpot::LANG.map {|lang| ["name_" + lang, "address_" + lang]}.flatten
+    # end
+
+    @filter = Filter.new(params)
+
+    if @filter.valid?
+      res = WifiSpot.search(@filter)#.map {|s| s.slice(*attrs)}
+
+      render json: res, status: :ok
     else
-      attrs += WifiSpot::LANG.map {|lang| ["name_" + lang, "address_" + lang]}.flatten
+      render json: @filter.errors, status: :ok
     end
-
-    res = WifiSpot
-      .near(@geo_point, @distance / 1000)
-      .limit(@limit)
-      .map {|s| s.as_json.merge({ "distance" => (s.distance_from(@geo_point) * 1000).to_i })}
-      .map {|s| s.slice(*attrs)}
-
-    render json: res, status: :ok
   end
 
   private
