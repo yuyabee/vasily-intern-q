@@ -3,9 +3,8 @@ class Filter
 
   attr_accessor :geo_point, :limit, :distance, :lang, :location, :lat, :lng
 
-  validates :limit, numericality: { only_integer: true, greater_than: 0, less_than: 10000 }, allow_nil: true
-  # within 100km
-  validates :distance, numericality: { greater_than_or_equal_to: 0, less_than: 100000 }, allow_nil: true
+  validates :limit, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+  validates :distance, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
   validates :lang, inclusion: { in: WifiSpot::LANG, message: "%{value} is not supported" }, allow_nil: true
 
