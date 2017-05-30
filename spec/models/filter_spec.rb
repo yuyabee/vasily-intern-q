@@ -12,4 +12,12 @@ RSpec.describe Filter, type: :model do
 
     expect(valid).to be_valid
   end
+
+  it "assigns default values to distance, lang, limit when not given in params" do
+    filter = Filter.new({location: "location" })
+
+    expect(filter.limit).to eq(5)
+    expect(filter.distance).to eq(0.5)
+    expect(filter.lang).to eq("ja")
+  end
 end

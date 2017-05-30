@@ -15,7 +15,7 @@ RSpec.describe WifiSpotsController, type: :controller do
     }
 
     let(:params) {
-      { lat: 35.76410755, lng: 140.384596, lang: "en", distance: 10000000, limit: 4,  }
+      { lat: 35.76410755, lng: 140.384596, lang: "en", distance: 10000000, limit: 4  }
     }
 
     # default filter should be limit: 5, distance: 500, lang: ja, and either [lat, lng] or location must be given as parameter
@@ -31,7 +31,9 @@ RSpec.describe WifiSpotsController, type: :controller do
       # one point where 5 wifi spots are with 500m is needed to fully test this
       # feature but for the purpose of the quiz i don't think it's worth ...
       json = JSON.parse(response.body)
-      expect(json.size).to eq(1)
+
+      # manually found 2 with in 500m
+      expect(json.size).to eq(2)
       expect(json[0]).to include("name_ja")
       expect(json[0]).to include("address_ja")
       expect(json[0]).to include("distance")

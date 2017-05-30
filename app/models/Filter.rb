@@ -19,7 +19,7 @@ class Filter
 
     # setting default when the params not given
     @limit = params.fetch(:limit, 5).to_i
-    @distance = params.fetch(:distance, 500).to_i / 1000 # unit: km
+    @distance = (params.fetch(:distance, 500).to_f / 1000.to_f).to_f # unit: km
 
     @lang = params.fetch(:lang, "ja")
   end
