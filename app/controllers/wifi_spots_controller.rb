@@ -4,13 +4,7 @@ class WifiSpotsController < ApplicationController
   def index
     @filter = Filter.new(params)
 
-    attrs = ["distance", "latitude", "longitude"]
-    case @filter.lang
-    when *WifiSpot::LANG
-      attrs += ["name_", "address_"].map {|attr| attr + @filter.lang}
-    else
-      attrs += WifiSpot::LANG.map {|lang| ["name_" + lang, "address_" + lang]}.flatten
-    end
+    attrs = ["distance", "latitude", "longitude", "name_#{@filter.lang}", "address_#{@filter.lang}"]
 
     if @filter.valid?
       res = WifiSpot.search(@filter)
