@@ -39,7 +39,7 @@ RSpec.describe WifiSpotsController, type: :controller do
       expect(json[0]).to include("distance")
     end
 
-    it "responds successfully to params" do
+    it "responds successfully to params (accurate distance)" do
       get :index, params: params
 
       expect(response).to be_success
@@ -48,6 +48,8 @@ RSpec.describe WifiSpotsController, type: :controller do
       expect(json[0]).to include("name_en")
       expect(json[0]).to include("address_en")
       expect(json[0]).to include("distance")
+      # calculation of distance is accurate
+      expect(json[1]["distance"]).to eq(71)
     end
 
     it "responds with error when negative distance is given" do
