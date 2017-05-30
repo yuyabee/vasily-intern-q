@@ -28,15 +28,23 @@ RSpec.describe WifiSpotsController, type: :controller do
       get :index, params: default_params
 
       expect(response).to be_success
-      # one point where 5 wifi spots are with 500m is needed to fully test this
-      # feature but for the purpose of the quiz i don't think it's worth ...
       json = JSON.parse(response.body)
 
-      # manually found 2 with in 500m
+      # manually found 2 with in 500m; limit in default params is tested in
+      # another case
       expect(json.size).to eq(2)
       expect(json[0]).to include("name_ja")
       expect(json[0]).to include("address_ja")
       expect(json[0]).to include("distance")
+    end
+
+    it "responds successfully to default params (test limit)" do
+      get :index, params: default_params.merge({ distance: 100000 })
+
+      expect(response).to be_success
+      json = JSON.parse(response.body)
+
+      expect(json.size).to eq(5)
     end
 
     it "responds successfully to params (accurate distance)" do
