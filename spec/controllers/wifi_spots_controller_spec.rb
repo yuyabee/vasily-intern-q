@@ -2,46 +2,42 @@ require 'rails_helper'
 
 RSpec.describe WifiSpotsController, type: :controller do
   describe "GET index" do
-    let(:lat) { 35.76410755 }
-    let(:lng) { 140.384596 }
-    let(:lang) { "en" }
-    let(:distance) { 1000 }
-    let(:limit) { 15 }
-    let(:search) { "新宿" }
+    let(:params) {
+      { lat: 35.76410755, lng: 140.384596, lang: "en", distance: 1000, limit: 15,  }
+    }
 
-    it "assigns default values to @limit, @distance and @lang" do
-      get :index, params: { lat: lat, lng: lng }
+    it "responds successfully with the params" do
+      get :index, params: params
 
-      expect(assigns(:limit)).to eq(5)
-      expect(assigns(:distance)).to eq(500)
-      expect(assigns(:lang)).to eq("ja")
+      expect(response).to be_success
     end
 
-    it "assigns @geo_point with the given lat and lng" do
-      get :index, params: { lat: lat, lng: lng }
+    it "responds with error when negative distance is given" do
+      get :index, params: params.merge({ distance: -100 })
 
-      expect(assigns(:geo_point)).to eq([lat, lng])
+      expect(response).to be_bad_request
+      expect(JSON.parse(response.body)).to include("distance")
     end
 
-    it "assigns params[:search] to @geo_point" do
-      get :index, params: { search: search }
+    it "responds with error when lang other than ja or en is given" do
+      get :index, params: params.merge({ lang: "fr" })
 
-      expect(assigns(:geo_point)).to eq(search)
+      expect(response).to be_bad_request
+      expect(JSON.parse(response.body)).to include("lang")
     end
 
-    it "assigns params[:search] to @geo_point when [lat, lng] and search is given" do
-      get :index, params: { lat: lat, lng: lng, search: search }
+    it "responds with error when location is not given" do
+      get :index, params: params.reject {|k, v| [:lat, :lng].include?(k) }
 
-      expect(assigns(:geo_point)).to eq(search)
+      expect(response).to be_bad_request
+      expect(JSON.parse(response.body)).to include("geo_point")
     end
 
-    it "assigns @limit, @distance, and @lang with the given parameters" do
-      get :index, params: { lat: lat, lng: lng, lang: lang, distance: distance, limit: limit }
+    it "responds with error when location is not given" do
+      get :index, params: params.reject {|k, v| [:lat, :lng].include?(k) }
 
-      expect(assigns(:geo_point)).to eq([lat, lng])
-      expect(assigns(:lang)).to eq(lang)
-      expect(assigns(:distance)).to eq(distance)
-      expect(assigns(:limit)).to eq(limit)
+      expect(response).to be_bad_request
+      expect(JSON.parse(response.body)).to include("geo_point")
     end
   end
 end

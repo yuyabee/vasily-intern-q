@@ -19,7 +19,7 @@ class WifiSpotsController < ApplicationController
 
       render json: res, status: :ok
     else
-      render json: @filter.errors, status: :ok
+      render json: @filter.errors, status: :bad_request
     end
   end
 
